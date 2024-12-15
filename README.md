@@ -1,2 +1,0 @@
-# aixohub-algotrader
-algotrader
