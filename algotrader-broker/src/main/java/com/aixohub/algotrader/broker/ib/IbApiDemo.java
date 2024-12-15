@@ -1,6 +1,7 @@
 package com.aixohub.algotrader.broker.ib;
 
 import com.aixohub.algotrader.base.model.AccountInfo;
+import com.aixohub.algotrader.base.utils.JsonUtils;
 import com.aixohub.algotrader.broker.ib.config.DefaultConnectionConfiguration;
 
 import java.math.BigDecimal;
@@ -15,6 +16,6 @@ public class IbApiDemo {
 
         BigDecimal cash = ibBroker.getCash("");
         Map<String, List<AccountInfo>> accMap = ibBroker.getAccMap();
-        System.out.println("cash= "+ accMap);
+        System.out.println("cash= "+ JsonUtils.toJson(accMap));
     }
 }

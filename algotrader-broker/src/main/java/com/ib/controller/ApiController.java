@@ -1341,13 +1341,13 @@ public class ApiController implements EWrapper {
 
     protected void sendEOM() {
         if (m_outLogger != null) {
-            m_outLogger.info("\n");
+            m_outLogger.info(" m_outLogger \n");
         }
     }
 
     private void recEOM() {
         if (m_inLogger != null) {
-            m_inLogger.info("\n");
+            m_inLogger.info(" m_inLogger \n");
         }
     }
 

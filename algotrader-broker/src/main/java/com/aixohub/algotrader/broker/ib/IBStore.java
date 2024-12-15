@@ -236,9 +236,9 @@ public class IBStore implements ApiController.IConnectionHandler {
                 for (String managedAccount : this.managedAccounts) {
                     m_controller.reqAccountUpdates(subscribe, managedAccount, defaultAccountHandler);
                     try {
-                        Thread.sleep(500);
+                        Thread.sleep(400);
                     } catch (InterruptedException e) {
-                        logger.warn("start-InterruptedException", e);
+                        logger.warn("reqAccountUpdates-InterruptedException", e);
                         throw new RuntimeException(e);
                     }
                 }
