@@ -2,10 +2,12 @@ package com.aixohub.algotrader.broker.ib;
 
 import com.aixohub.algotrader.base.model.AccountInfo;
 import com.aixohub.algotrader.broker.ib.config.IConnectionConfiguration;
+import com.aixohub.algotrader.broker.ib.handler.CompletedOrdersHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultAccountHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultLiveOrderHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultPositionHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultTimeHandler;
+import com.aixohub.algotrader.broker.ib.model.CompletedOrder;
 import com.aixohub.algotrader.broker.ib.model.OrderRow;
 import com.aixohub.algotrader.broker.ib.model.PositionInfo;
 import com.ib.controller.ApiController;
@@ -345,6 +347,12 @@ public class IBStore implements ApiController.IConnectionHandler {
         DefaultLiveOrderHandler defaultLiveOrderHandler = new DefaultLiveOrderHandler();
         m_controller.reqLiveOrders(defaultLiveOrderHandler);
         return defaultLiveOrderHandler.getmOrderList();
+    }
+
+    public  List<CompletedOrder> reqCompletedOrders(){
+        CompletedOrdersHandler completedOrdersHandler = new CompletedOrdersHandler();
+        m_controller.reqCompletedOrders(completedOrdersHandler);
+        return completedOrdersHandler.getCompletedOrders();
     }
 
     public void placeOrModifyOrder(){

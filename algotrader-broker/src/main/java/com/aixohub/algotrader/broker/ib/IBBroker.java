@@ -3,6 +3,7 @@ package com.aixohub.algotrader.broker.ib;
 import com.aixohub.algotrader.base.model.AccountInfo;
 import com.aixohub.algotrader.base.model.OrderInfo;
 import com.aixohub.algotrader.base.utils.JsonUtils;
+import com.aixohub.algotrader.broker.ib.model.CompletedOrder;
 import com.aixohub.algotrader.broker.ib.model.OrderRow;
 import com.aixohub.algotrader.broker.ib.model.PositionInfo;
 import com.aixohub.algotrader.broker.ib.config.IConnectionConfiguration;
@@ -110,6 +111,10 @@ public class IBBroker {
 
     public List<OrderRow> reqLiveOrders() {
         return ibStore.reqLiveOrders();
+    }
+
+    public List<CompletedOrder> reqCompletedOrders() {
+        return ibStore.reqCompletedOrders();
     }
 //
 //    public void cancel(Order order) {
