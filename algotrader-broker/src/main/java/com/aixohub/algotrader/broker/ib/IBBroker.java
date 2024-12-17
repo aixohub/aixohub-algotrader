@@ -2,10 +2,14 @@ package com.aixohub.algotrader.broker.ib;
 
 import com.aixohub.algotrader.base.model.AccountInfo;
 import com.aixohub.algotrader.base.model.OrderInfo;
+import com.aixohub.algotrader.base.utils.JsonUtils;
+import com.aixohub.algotrader.broker.ib.model.OrderRow;
+import com.aixohub.algotrader.broker.ib.model.PositionInfo;
 import com.aixohub.algotrader.broker.ib.config.IConnectionConfiguration;
 import com.ib.client.Execution;
 import com.ib.client.Order;
 import com.ib.client.OrderStatus;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +24,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class IBBroker {
 
@@ -91,11 +97,20 @@ public class IBBroker {
         return value;
     }
 
-//    public Position getPosition(String symbol, boolean clone) {
-//        Position position = ibStore.getPosition(symbol, clone);
-//        logger.info("getPosition: " + position);
-//        return position;
-//    }
+    public PositionInfo getPosition(String symbol) {
+        List<PositionInfo> positionList = ibStore.getPosition(symbol);
+        logger.info("getPosition: " + JsonUtils.toJson(positionList));
+        if (CollectionUtils.isNotEmpty(positionList)) {
+            Map<String, PositionInfo> positionMap = positionList.stream().
+                    collect(Collectors.toMap(t -> t.getContract().getSymbol(), Function.identity(), (v1, v2) -> v2));
+            return positionMap.get(symbol);
+        }
+        return null;
+    }
+
+    public List<OrderRow> reqLiveOrders() {
+        return ibStore.reqLiveOrders();
+    }
 //
 //    public void cancel(Order order) {
 //        int orderId = order.getOrderId();

@@ -3,8 +3,11 @@ package com.aixohub.algotrader.broker.ib;
 import com.aixohub.algotrader.base.model.AccountInfo;
 import com.aixohub.algotrader.broker.ib.config.IConnectionConfiguration;
 import com.aixohub.algotrader.broker.ib.handler.DefaultAccountHandler;
+import com.aixohub.algotrader.broker.ib.handler.DefaultLiveOrderHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultPositionHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultTimeHandler;
+import com.aixohub.algotrader.broker.ib.model.OrderRow;
+import com.aixohub.algotrader.broker.ib.model.PositionInfo;
 import com.ib.controller.ApiController;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -51,11 +54,21 @@ public class IBStore implements ApiController.IConnectionHandler {
     private boolean portUpdate = false;
 
     private Duration timeOffset = Duration.ZERO;
-    private List<String> managedAccounts = new ArrayList<>();
+    private final List<String> managedAccountList = new ArrayList<>();
+
+    private  List<PositionInfo> positionList = new ArrayList<>();
 
     Map<String, List<AccountInfo>> accMap = new ConcurrentHashMap<>();
     private Map<String, BigDecimal> accountCashMap = new ConcurrentHashMap<>();
     private Map<String, BigDecimal> accountValueMap = new ConcurrentHashMap<>();
+
+    public List<PositionInfo> getPositionList() {
+        return positionList;
+    }
+
+    public void setPositionList(List<PositionInfo> positionList) {
+        this.positionList = positionList;
+    }
 
     public CountDownLatch getLatch() {
         return latch;
@@ -89,8 +102,8 @@ public class IBStore implements ApiController.IConnectionHandler {
         this.accountValueMap = accountValueMap;
     }
 
-    private Queue<Object> notifications = new LinkedList<>();
-    private Iterator<Integer> tickerIdIterator = new Iterator<>() {
+    private final Queue<Object> notifications = new LinkedList<>();
+    private final Iterator<Integer> tickerIdIterator = new Iterator<>() {
         private int current = REQIDBASE;
 
         @Override
@@ -115,11 +128,10 @@ public class IBStore implements ApiController.IConnectionHandler {
         return m_outLogger;
     }
 
-    public ApiController initController() {
+    public void initController() {
         if (m_controller == null) {
             m_controller = new ApiController(this, getInLogger(), getOutLogger());
         }
-        return m_controller;
     }
 
     IBStore() {
@@ -168,7 +180,7 @@ public class IBStore implements ApiController.IConnectionHandler {
 
     @Override
     public void accountList(List<String> list) {
-        managedAccounts.addAll(list);
+        managedAccountList.addAll(list);
     }
 
     @Override
@@ -232,8 +244,8 @@ public class IBStore implements ApiController.IConnectionHandler {
     public void reqAccountUpdates(boolean subscribe, String account) {
         DefaultAccountHandler defaultAccountHandler = new DefaultAccountHandler(this);
         if (StringUtils.isBlank(account)) {
-            if (CollectionUtils.isNotEmpty(this.managedAccounts)) {
-                for (String managedAccount : this.managedAccounts) {
+            if (CollectionUtils.isNotEmpty(this.managedAccountList)) {
+                for (String managedAccount : this.managedAccountList) {
                     m_controller.reqAccountUpdates(subscribe, managedAccount, defaultAccountHandler);
                     try {
                         Thread.sleep(400);
@@ -258,11 +270,11 @@ public class IBStore implements ApiController.IConnectionHandler {
     public BigDecimal getAccountCash(String account) {
         // Lock access to accCash to avoid an event interfering
         if (StringUtils.isBlank(account)) {
-            if (managedAccounts == null || managedAccounts.isEmpty()) {
+            if (managedAccountList == null || managedAccountList.isEmpty()) {
                 return BigDecimal.ZERO;
             }
 
-            if (managedAccounts.size() > 1) {
+            if (managedAccountList.size() > 1) {
                 BigDecimal total = BigDecimal.ZERO;
                 for (Map.Entry<String, BigDecimal> entry : accountCashMap.entrySet()) {
                     BigDecimal val = entry.getValue();
@@ -274,7 +286,7 @@ public class IBStore implements ApiController.IConnectionHandler {
             }
 
             // Only 1 account, fall through to return only 1
-            account = managedAccounts.get(0);
+            account = managedAccountList.get(0);
         }
 
         // Return cash for specific account
@@ -293,11 +305,11 @@ public class IBStore implements ApiController.IConnectionHandler {
     public BigDecimal getAccountValue(String account) {
 
         if (StringUtils.isBlank(account)) {
-            if (managedAccounts == null || managedAccounts.isEmpty()) {
+            if (managedAccountList == null || managedAccountList.isEmpty()) {
                 return BigDecimal.ZERO;
             }
 
-            if (managedAccounts.size() > 1) {
+            if (managedAccountList.size() > 1) {
                 BigDecimal total = BigDecimal.ZERO;
                 for (Map.Entry<String, BigDecimal> entry : accountValueMap.entrySet()) {
                     BigDecimal value = entry.getValue();
@@ -309,7 +321,7 @@ public class IBStore implements ApiController.IConnectionHandler {
             }
 
             // Only 1 account, fall through to return only 1
-            account = managedAccounts.get(0);
+            account = managedAccountList.get(0);
         }
 
         // Return value for specific account
@@ -323,7 +335,29 @@ public class IBStore implements ApiController.IConnectionHandler {
         return defaultTimeHandler.getTime();
     }
 
-    public void requestPositions() {
-        // Implementation for requesting positions
+
+    public List<PositionInfo> getPosition(String symbol){
+        List<PositionInfo> positionList = getPositionList();
+        return positionList;
     }
+
+    public  List<OrderRow> reqLiveOrders(){
+        DefaultLiveOrderHandler defaultLiveOrderHandler = new DefaultLiveOrderHandler();
+        m_controller.reqLiveOrders(defaultLiveOrderHandler);
+        return defaultLiveOrderHandler.getmOrderList();
+    }
+
+    public void placeOrModifyOrder(){
+
+      //  m_controller.placeOrModifyOrder();
+    }
+
+    /**
+     *
+     */
+    public void cancelAllOrders() {
+        m_controller.cancelAllOrders();
+    }
+
+
 }

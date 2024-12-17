@@ -3,6 +3,7 @@
 
 package com.ib.client;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ import java.util.List;
  * May be used to indicate between a monthly or a weekly contract.
  * </pre>
  */
-public class Contract implements Cloneable {
+public class Contract implements Cloneable, Serializable {
 
     private int m_conid;
     private String m_symbol;
