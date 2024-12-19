@@ -1,6 +1,7 @@
-package com.aixohub.algotrader.service.quant.observers;
+package com.aixohub.algotrader.service.quant.observers.impl;
 
 import com.aixohub.algotrader.service.quant.config.ContractBuilder;
+import com.aixohub.algotrader.service.quant.observers.HistoryObserver;
 import com.ib.controller.Bar;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;

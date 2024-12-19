@@ -1,6 +1,8 @@
-package com.aixohub.algotrader.service.quant.observers;
+package com.aixohub.algotrader.service.quant.observers.impl;
 
 import com.aixohub.algotrader.service.quant.config.ContractBuilder;
+import com.aixohub.algotrader.service.quant.model.MarketDataRow;
+import com.aixohub.algotrader.service.quant.observers.MarketDataObserver;
 import com.ib.client.TickAttrib;
 import com.ib.client.TickType;
 import com.ib.controller.ApiController.ITopMktDataHandler;
@@ -18,7 +20,7 @@ public class IbMarketDataObserver implements MarketDataObserver {
     private static final Logger log = LoggerFactory.getLogger(IbMarketDataObserver.class);
 
     private final String symbol;
-    private final PublishSubject<Price> priceSubject;
+    private final PublishSubject<MarketDataRow> priceSubject;
 
     public IbMarketDataObserver(String symbol) {
         this.symbol = symbol;
@@ -32,14 +34,14 @@ public class IbMarketDataObserver implements MarketDataObserver {
         }
         double realPrice = ContractBuilder.getSymbolPrice(symbol, price);
 
-        priceSubject.onNext(new Price(tickType, realPrice));
+        priceSubject.onNext(new MarketDataRow(tickType, realPrice));
     }
 
     public String getSymbol() {
         return symbol;
     }
 
-    public Observable<Price> priceObservable() {
+    public Observable<MarketDataRow> priceObservable() {
         return priceSubject.asObservable();
     }
 

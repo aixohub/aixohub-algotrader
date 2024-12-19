@@ -243,4 +243,27 @@ public class OrderState {
     result = 31 * result + (int) (temp ^ (temp >>> 32));
     return result;
   }
+
+  @Override
+  public String toString() {
+    return "OrderState{" +
+            "m_status='" + m_status + '\'' +
+            ", m_initMarginBefore='" + m_initMarginBefore + '\'' +
+            ", m_maintMarginBefore='" + m_maintMarginBefore + '\'' +
+            ", m_equityWithLoanBefore='" + m_equityWithLoanBefore + '\'' +
+            ", m_initMarginChange='" + m_initMarginChange + '\'' +
+            ", m_maintMarginChange='" + m_maintMarginChange + '\'' +
+            ", m_equityWithLoanChange='" + m_equityWithLoanChange + '\'' +
+            ", m_initMarginAfter='" + m_initMarginAfter + '\'' +
+            ", m_maintMarginAfter='" + m_maintMarginAfter + '\'' +
+            ", m_equityWithLoanAfter='" + m_equityWithLoanAfter + '\'' +
+            ", m_commission=" + m_commission +
+            ", m_minCommission=" + m_minCommission +
+            ", m_maxCommission=" + m_maxCommission +
+            ", m_commissionCurrency='" + m_commissionCurrency + '\'' +
+            ", m_warningText='" + m_warningText + '\'' +
+            ", m_completedTime='" + m_completedTime + '\'' +
+            ", m_completedStatus='" + m_completedStatus + '\'' +
+            '}';
+  }
 }

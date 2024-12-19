@@ -15,14 +15,15 @@ public interface AccountObserver extends IAccountHandler {
 
     default void accountValue(String account, String key, String value, String currency) {
         if (key.equals("NetLiquidation") && currency.equals("USD")) {
-            logger.debug(String.format("account: %s, key: %s, value: %s, currency: %s",
-                    account, key, value, currency));
-            setNetValue(Double.valueOf(value));
+
+            logger.info("account: {}, key: {}, value: {}, currency: {}",
+                    account, key, value, currency);
+            setNetValue(Double.parseDouble(value));
         }
         if (key.equals("AvailableFunds") && currency.equals("USD")) {
             logger.debug(String.format("account: %s, key: %s, value: %s, currency: %s",
                     account, key, value, currency));
-            setCashBalance(Double.valueOf(value));
+            setCashBalance(Double.parseDouble(value));
         }
     }
 

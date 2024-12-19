@@ -1,5 +1,6 @@
 package com.aixohub.algotrader.service.quant.observers;
 
+import com.aixohub.algotrader.service.quant.model.MarketDataRow;
 import com.ib.client.Decimal;
 import com.ib.client.TickType;
 import com.ib.controller.ApiController.ITopMktDataHandler;
@@ -12,7 +13,7 @@ public interface MarketDataObserver extends ITopMktDataHandler {
 
     String getSymbol();
 
-    Observable<Price> priceObservable();
+    Observable<MarketDataRow> priceObservable();
 
     @Override
     default void tickSize(TickType tickType, Decimal size) {
@@ -30,31 +31,5 @@ public interface MarketDataObserver extends ITopMktDataHandler {
     default void marketDataType(int marketDataType) {
     }
 
-    class Price {
-        private TickType tickType;
-        private double price;
-
-        Price(TickType tickType, double price) {
-            this.tickType = tickType;
-            this.price = price;
-        }
-
-        public TickType getTickType() {
-            return tickType;
-        }
-
-        public void setTickType(TickType tickType) {
-            this.tickType = tickType;
-        }
-
-        public double getPrice() {
-            return price;
-        }
-
-        public void setPrice(double price) {
-            this.price = price;
-        }
-
-    }
 
 }

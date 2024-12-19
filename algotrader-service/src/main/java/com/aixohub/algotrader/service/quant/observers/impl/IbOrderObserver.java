@@ -1,5 +1,6 @@
-package com.aixohub.algotrader.service.quant.observers;
+package com.aixohub.algotrader.service.quant.observers.impl;
 
+import com.aixohub.algotrader.service.quant.observers.OrderObserver;
 import com.ib.client.Decimal;
 import com.ib.client.OrderState;
 import com.ib.client.OrderStatus;

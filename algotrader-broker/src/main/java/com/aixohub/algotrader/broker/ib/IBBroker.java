@@ -116,6 +116,10 @@ public class IBBroker {
     public List<CompletedOrder> reqCompletedOrders() {
         return ibStore.reqCompletedOrders();
     }
+
+    public void reqTickByTickData(String symbol){
+        ibStore.reqTickByTickData(symbol);
+    }
 //
 //    public void cancel(Order order) {
 //        int orderId = order.getOrderId();

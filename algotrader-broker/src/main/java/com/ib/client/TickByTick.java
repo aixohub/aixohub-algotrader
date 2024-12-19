@@ -3,7 +3,9 @@
 
 package com.ib.client;
 
-public class TickByTick {
+import java.io.Serializable;
+
+public class TickByTick implements Serializable {
 
   private final int m_tickType; // 0 - None, 1 - Last, 2 - AllLast, 3 -BidAsk, 4 - MidPoint
   private final long m_time;  // in seconds
@@ -19,8 +21,13 @@ public class TickByTick {
   private Decimal m_askSize;
   private double m_midPoint;
 
+  public TickByTick() {
+    m_time = 0;
+    m_tickType = 3;
+  }
+
   public TickByTick(int tickType, long time, double price, Decimal size,
-      TickAttribLast tickAttribLast, String exchange, String specialConditions) {
+                    TickAttribLast tickAttribLast, String exchange, String specialConditions) {
     m_tickType = tickType;
     m_time = time;
     m_price = price;

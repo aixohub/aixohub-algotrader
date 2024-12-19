@@ -6,10 +6,12 @@ import com.aixohub.algotrader.broker.ib.handler.CompletedOrdersHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultAccountHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultLiveOrderHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultPositionHandler;
+import com.aixohub.algotrader.broker.ib.handler.DefaultTickByTickDataHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultTimeHandler;
 import com.aixohub.algotrader.broker.ib.model.CompletedOrder;
 import com.aixohub.algotrader.broker.ib.model.OrderRow;
 import com.aixohub.algotrader.broker.ib.model.PositionInfo;
+import com.ib.client.Contract;
 import com.ib.controller.ApiController;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -355,6 +357,19 @@ public class IBStore implements ApiController.IConnectionHandler {
         return completedOrdersHandler.getCompletedOrders();
     }
 
+    public void reqTickByTickData(String symbol){
+        Contract contract = new Contract();
+        contract.symbol(symbol);
+        contract.localSymbol(symbol);
+        contract.secType("STK");
+        contract.currency("USD");
+        contract.exchange("SMART");
+        String tickType = "BidAsk";
+        int numberOfTicks = 2;
+        boolean ignoreSize = false;
+        DefaultTickByTickDataHandler defaultTickByTickDataHandler = new DefaultTickByTickDataHandler();
+        m_controller.reqTickByTickData(contract, tickType, numberOfTicks, ignoreSize, defaultTickByTickDataHandler);
+    }
     public void placeOrModifyOrder(){
 
       //  m_controller.placeOrModifyOrder();

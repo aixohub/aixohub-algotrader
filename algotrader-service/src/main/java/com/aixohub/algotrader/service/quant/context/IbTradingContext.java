@@ -3,14 +3,20 @@ package com.aixohub.algotrader.service.quant.context;
 import com.aixohub.algotrader.service.quant.config.ContractBuilder;
 import com.aixohub.algotrader.service.quant.exception.NoOrderAvailable;
 import com.aixohub.algotrader.service.quant.exception.PriceNotAvailableException;
+import com.aixohub.algotrader.service.quant.model.MarketDataRow;
 import com.aixohub.algotrader.service.quant.observers.AccountObserver;
 import com.aixohub.algotrader.service.quant.observers.HistoryObserver;
-import com.aixohub.algotrader.service.quant.observers.IbAccountObserver;
-import com.aixohub.algotrader.service.quant.observers.IbHistoryObserver;
-import com.aixohub.algotrader.service.quant.observers.IbMarketDataObserver;
-import com.aixohub.algotrader.service.quant.observers.IbOrderObserver;
 import com.aixohub.algotrader.service.quant.observers.MarketDataObserver;
 import com.aixohub.algotrader.service.quant.observers.OrderObserver;
+import com.aixohub.algotrader.service.quant.observers.impl.IbAccountObserver;
+import com.aixohub.algotrader.service.quant.observers.impl.IbHistoryObserver;
+import com.aixohub.algotrader.service.quant.observers.impl.IbMarketDataObserver;
+import com.aixohub.algotrader.service.quant.observers.impl.IbOrderObserver;
+import com.aixohub.algotrader.service.trading.lib.backtest.SimpleClosedOrder;
+import com.aixohub.algotrader.service.trading.lib.backtest.SimpleOrder;
+import com.aixohub.algotrader.service.trading.lib.model.ClosedOrder;
+import com.aixohub.algotrader.service.trading.lib.model.Order;
+import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.ib.client.Contract;
@@ -21,11 +27,6 @@ import com.ib.client.OrderType;
 import com.ib.client.TickType;
 import com.ib.client.Types;
 import com.ib.controller.ApiController;
-import com.aixohub.algotrader.service.trading.lib.backtest.SimpleClosedOrder;
-import com.aixohub.algotrader.service.trading.lib.backtest.SimpleOrder;
-import com.aixohub.algotrader.service.trading.lib.model.ClosedOrder;
-import com.aixohub.algotrader.service.trading.lib.model.Order;
-import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
@@ -144,7 +145,7 @@ public class IbTradingContext implements TradingContext {
 
         controller.reqTopMktData(contract, "", false, true, marketDataObserver);
 
-        marketDataObserver.priceObservable().subscribe(new Subscriber<MarketDataObserver.Price>() {
+        marketDataObserver.priceObservable().subscribe(new Subscriber<MarketDataRow>() {
             @Override
             public void onCompleted() {
             }
@@ -154,7 +155,7 @@ public class IbTradingContext implements TradingContext {
             }
 
             @Override
-            public void onNext(MarketDataObserver.Price price) {
+            public void onNext(MarketDataRow price) {
                 if (contractPrices.containsKey(contractSymbol)) {
                     contractPrices.get(contractSymbol).put(price.getTickType(), price.getPrice());
                 } else {

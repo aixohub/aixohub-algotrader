@@ -42,4 +42,13 @@ public class CompletedOrder {
     public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
     }
+
+    @Override
+    public String toString() {
+        return "CompletedOrder{" +
+                "contract=" + contract +
+                ", order=" + order +
+                ", orderState=" + orderState +
+                '}';
+    }
 }

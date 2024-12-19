@@ -1,6 +1,7 @@
-package com.aixohub.algotrader.service.quant.observers;
+package com.aixohub.algotrader.service.quant.observers.impl;
 
 import com.aixohub.algotrader.service.quant.context.TradingContext;
+import com.aixohub.algotrader.service.quant.observers.AccountObserver;
 import com.ib.client.Decimal;
 import rx.Observable;
 import rx.subjects.PublishSubject;

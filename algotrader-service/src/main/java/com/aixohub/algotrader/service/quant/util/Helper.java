@@ -2,7 +2,7 @@ package com.aixohub.algotrader.service.quant.util;
 
 import com.aixohub.algotrader.service.quant.config.ContractBuilder;
 import com.aixohub.algotrader.service.quant.observers.HistoryObserver;
-import com.aixohub.algotrader.service.quant.observers.IbHistoryObserver;
+import com.aixohub.algotrader.service.quant.observers.impl.IbHistoryObserver;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;

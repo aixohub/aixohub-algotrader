@@ -3,7 +3,6 @@ package com.aixohub.algotrader.broker.ib;
 import com.aixohub.algotrader.base.model.AccountInfo;
 import com.aixohub.algotrader.base.utils.JsonUtils;
 import com.aixohub.algotrader.broker.ib.config.DefaultConnectionConfiguration;
-import com.aixohub.algotrader.broker.ib.model.CompletedOrder;
 import com.aixohub.algotrader.broker.ib.model.PositionInfo;
 
 import java.math.BigDecimal;
@@ -19,7 +18,7 @@ public class IbApiDemo {
         BigDecimal cash = ibBroker.getCash("");
         Map<String, List<AccountInfo>> accMap = ibBroker.getAccMap();
         PositionInfo position = ibBroker.getPosition("");
-        List<CompletedOrder> orderRows = ibBroker.reqCompletedOrders();
-        System.out.println("orderRows= "+ JsonUtils.toJson(orderRows));
+        ibBroker.reqTickByTickData("MSTR");
+        System.out.println("position= "+ JsonUtils.toJson(position));
     }
 }

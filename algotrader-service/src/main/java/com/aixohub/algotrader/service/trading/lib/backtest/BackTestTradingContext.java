@@ -159,7 +159,7 @@ public class BackTestTradingContext implements TradingContext {
             return Math.abs(order.getAmount()) * 2.04;
         }
         double commissions = Math.max(1, Math.abs(order.getAmount()) * 0.005);
-        logger.debug("Commissions: {}", commissions);
+        logger.info("Commissions: {}", commissions);
         return commissions;
     }
 
