@@ -1,6 +1,6 @@
-package org.lst.trading.lib.model;
+package com.aixohub.algotrader.service.trading.lib.model;
 
-import org.lst.trading.lib.series.TimeSeries;
+import com.aixohub.algotrader.service.trading.lib.series.TimeSeries;
 
 import java.time.Instant;
 import java.util.List;

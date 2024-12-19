@@ -1,4 +1,4 @@
-package org.lst.trading.lib.series;
+package com.aixohub.algotrader.service.trading.lib.series;
 
 import java.util.List;
 import java.util.function.Function;

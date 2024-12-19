@@ -1,4 +1,4 @@
-package org.lst.trading.main.strategy.kalman;
+package com.aixohub.algotrader.service.trading.main.strategy.kalman;
 
 import org.la4j.Matrix;
 

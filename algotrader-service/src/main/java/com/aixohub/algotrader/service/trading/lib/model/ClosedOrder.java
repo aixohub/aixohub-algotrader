@@ -1,4 +1,4 @@
-package org.lst.trading.lib.model;
+package com.aixohub.algotrader.service.trading.lib.model;
 
 import java.time.Instant;
 

@@ -1,9 +1,9 @@
-package org.lst.trading.lib.util.yahoo;
+package com.aixohub.algotrader.service.trading.lib.util.yahoo;
 
-import org.lst.trading.lib.csv.CsvReader;
-import org.lst.trading.lib.series.DoubleSeries;
-import org.lst.trading.lib.util.HistoricalPriceService;
-import org.lst.trading.lib.util.Http;
+import com.aixohub.algotrader.service.trading.lib.util.HistoricalPriceService;
+import com.aixohub.algotrader.service.trading.lib.util.Http;
+import com.aixohub.algotrader.service.trading.lib.csv.CsvReader;
+import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;
@@ -25,8 +25,8 @@ import java.util.stream.Stream;
 import static java.lang.String.format;
 import static java.nio.file.Files.lines;
 import static java.nio.file.Paths.get;
-import static org.lst.trading.lib.csv.CsvReader.ParseFunction.doubleColumn;
-import static org.lst.trading.lib.csv.CsvReader.ParseFunction.ofColumn;
+import static com.aixohub.algotrader.service.trading.lib.csv.CsvReader.ParseFunction.doubleColumn;
+import static com.aixohub.algotrader.service.trading.lib.csv.CsvReader.ParseFunction.ofColumn;
 
 public class YahooFinance implements HistoricalPriceService {
     public static final String SEP = ",";

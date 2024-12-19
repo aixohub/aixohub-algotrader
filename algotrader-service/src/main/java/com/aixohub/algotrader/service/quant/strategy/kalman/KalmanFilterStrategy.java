@@ -10,10 +10,10 @@ import com.aixohub.algotrader.service.quant.exception.PriceNotAvailableException
 import com.aixohub.algotrader.service.quant.strategy.AbstractStrategy;
 import com.aixohub.algotrader.service.quant.strategy.Criterion;
 import org.apache.commons.math3.stat.StatUtils;
-import org.lst.trading.lib.series.DoubleSeries;
-import org.lst.trading.lib.series.MultipleDoubleSeries;
-import org.lst.trading.lib.series.TimeSeries;
-import org.lst.trading.main.strategy.kalman.Cointegration;
+import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
+import com.aixohub.algotrader.service.trading.lib.series.MultipleDoubleSeries;
+import com.aixohub.algotrader.service.trading.lib.series.TimeSeries;
+import com.aixohub.algotrader.service.trading.main.strategy.kalman.Cointegration;
 
 import java.util.List;
 import java.util.Queue;

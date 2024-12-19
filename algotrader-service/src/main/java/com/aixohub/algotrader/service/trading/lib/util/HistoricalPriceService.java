@@ -1,6 +1,6 @@
-package org.lst.trading.lib.util;
+package com.aixohub.algotrader.service.trading.lib.util;
 
-import org.lst.trading.lib.series.DoubleSeries;
+import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
 import rx.Observable;
 
 public interface HistoricalPriceService {

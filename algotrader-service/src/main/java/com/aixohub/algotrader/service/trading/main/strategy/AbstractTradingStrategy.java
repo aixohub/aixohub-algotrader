@@ -1,6 +1,6 @@
-package org.lst.trading.main.strategy;
+package com.aixohub.algotrader.service.trading.main.strategy;
 
-import org.lst.trading.lib.model.TradingStrategy;
+import com.aixohub.algotrader.service.trading.lib.model.TradingStrategy;
 
 public abstract class AbstractTradingStrategy implements TradingStrategy {
     double mWeight = 1;

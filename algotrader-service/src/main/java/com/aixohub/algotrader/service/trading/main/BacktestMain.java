@@ -1,4 +1,4 @@
-package org.lst.trading.main;
+package com.aixohub.algotrader.service.trading.main;
 
 public class BacktestMain {
 //  public static void main(String[] args) throws URISyntaxException, IOException {

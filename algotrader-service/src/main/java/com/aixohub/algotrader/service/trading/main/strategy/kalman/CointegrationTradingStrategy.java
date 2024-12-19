@@ -1,13 +1,13 @@
-package org.lst.trading.main.strategy.kalman;
+package com.aixohub.algotrader.service.trading.main.strategy.kalman;
 
+import com.aixohub.algotrader.service.trading.lib.model.TradingContext;
 import org.apache.commons.math3.stat.StatUtils;
-import org.lst.trading.lib.model.Order;
-import org.lst.trading.lib.model.TradingContext;
-import org.lst.trading.lib.series.DoubleSeries;
-import org.lst.trading.lib.series.MultipleDoubleSeries;
-import org.lst.trading.lib.series.TimeSeries;
-import org.lst.trading.lib.util.Util;
-import org.lst.trading.main.strategy.AbstractTradingStrategy;
+import com.aixohub.algotrader.service.trading.lib.model.Order;
+import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
+import com.aixohub.algotrader.service.trading.lib.series.MultipleDoubleSeries;
+import com.aixohub.algotrader.service.trading.lib.series.TimeSeries;
+import com.aixohub.algotrader.service.trading.lib.util.Util;
+import com.aixohub.algotrader.service.trading.main.strategy.AbstractTradingStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

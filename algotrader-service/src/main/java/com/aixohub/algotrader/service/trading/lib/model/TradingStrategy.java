@@ -1,4 +1,4 @@
-package org.lst.trading.lib.model;
+package com.aixohub.algotrader.service.trading.lib.model;
 
 public interface TradingStrategy {
     default void onStart(TradingContext context) {

@@ -1,4 +1,6 @@
-package org.lst.trading.lib.series;
+package com.aixohub.algotrader.service.trading.lib.series;
+
+import com.aixohub.algotrader.service.trading.lib.util.Util;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -10,7 +12,7 @@ import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.lst.trading.lib.util.Util.check;
+import static com.aixohub.algotrader.service.trading.lib.util.Util.check;
 
 public class TimeSeries<T> implements Iterable<TimeSeries.Entry<T>> {
     List<Entry<T>> mData;
@@ -24,8 +26,8 @@ public class TimeSeries<T> implements Iterable<TimeSeries.Entry<T>> {
     }
 
     public static <T1, T2, F> TimeSeries<F> merge(TimeSeries<T1> t1, TimeSeries<T2> t2, MergeFunction2<T1, T2, F> f) {
-        check(t1.isAscending());
-        check(t2.isAscending());
+        Util.check(t1.isAscending());
+        Util.check(t2.isAscending());
 
         Iterator<Entry<T1>> i1 = t1.iterator();
         Iterator<Entry<T2>> i2 = t2.iterator();
@@ -90,7 +92,7 @@ public class TimeSeries<T> implements Iterable<TimeSeries.Entry<T>> {
     }
 
     public Stream<Entry<T>> reversedStream() {
-        check(!(mData instanceof LinkedList));
+        Util.check(!(mData instanceof LinkedList));
         return IntStream.range(1, mData.size() + 1).mapToObj(i -> mData.get(mData.size() - i));
     }
 
@@ -144,8 +146,8 @@ public class TimeSeries<T> implements Iterable<TimeSeries.Entry<T>> {
     }
 
     public TimeSeries<T> lag(int k, boolean addEmpty, T emptyVal) {
-        check(k > 0);
-        check(mData.size() >= k);
+        Util.check(k > 0);
+        Util.check(mData.size() >= k);
 
         ArrayList<Entry<T>> entries = new ArrayList<>(addEmpty ? mData.size() : mData.size() - k);
         if (addEmpty) {

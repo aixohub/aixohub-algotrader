@@ -5,7 +5,7 @@ import com.aixohub.algotrader.service.quant.exception.CriterionViolationExceptio
 import com.aixohub.algotrader.service.quant.exception.NoOrderAvailable;
 import com.aixohub.algotrader.service.quant.strategy.Criterion;
 import com.ib.client.OrderStatus;
-import org.lst.trading.lib.model.Order;
+import com.aixohub.algotrader.service.trading.lib.model.Order;
 
 import java.util.List;
 

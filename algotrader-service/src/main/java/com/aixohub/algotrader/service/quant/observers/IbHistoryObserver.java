@@ -5,7 +5,7 @@ import com.ib.controller.Bar;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
-import org.lst.trading.lib.series.DoubleSeries;
+import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Observable;

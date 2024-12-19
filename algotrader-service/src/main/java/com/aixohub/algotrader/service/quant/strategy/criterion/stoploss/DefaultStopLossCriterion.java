@@ -6,7 +6,7 @@ import com.aixohub.algotrader.service.quant.exception.CriterionViolationExceptio
 import com.aixohub.algotrader.service.quant.exception.NoOrderAvailable;
 import com.aixohub.algotrader.service.quant.exception.PriceNotAvailableException;
 import com.aixohub.algotrader.service.quant.strategy.Criterion;
-import org.lst.trading.lib.model.Order;
+import com.aixohub.algotrader.service.trading.lib.model.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
