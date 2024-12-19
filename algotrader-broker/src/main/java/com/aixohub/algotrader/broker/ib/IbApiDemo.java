@@ -19,6 +19,7 @@ public class IbApiDemo {
         Map<String, List<AccountInfo>> accMap = ibBroker.getAccMap();
         PositionInfo position = ibBroker.getPosition("");
         ibBroker.reqTickByTickData("MSTR");
+        ibBroker.reqTickByTickData("AVGO");
         System.out.println("position= "+ JsonUtils.toJson(position));
     }
 }

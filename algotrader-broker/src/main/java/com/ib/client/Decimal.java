@@ -204,6 +204,10 @@ public class Decimal implements Comparable<Decimal> {
     return isValid() ? m_value.stripTrailingZeros().toPlainString() : "";
   }
 
+  public BigDecimal toBigDecimal() {
+    return isValid() ? new BigDecimal(m_value.stripTrailingZeros().toPlainString()) : BigDecimal.ZERO;
+  }
+
   public long longValue() {
     return isValid() ? m_value.longValue() : Long.MAX_VALUE;
   }

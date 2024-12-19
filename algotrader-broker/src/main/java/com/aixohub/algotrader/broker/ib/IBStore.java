@@ -1,6 +1,7 @@
 package com.aixohub.algotrader.broker.ib;
 
 import com.aixohub.algotrader.base.model.AccountInfo;
+import com.aixohub.algotrader.broker.common.KafkaProxy;
 import com.aixohub.algotrader.broker.ib.config.IConnectionConfiguration;
 import com.aixohub.algotrader.broker.ib.handler.CompletedOrdersHandler;
 import com.aixohub.algotrader.broker.ib.handler.DefaultAccountHandler;
@@ -15,6 +16,8 @@ import com.ib.client.Contract;
 import com.ib.controller.ApiController;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.clients.producer.KafkaProducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -365,9 +369,11 @@ public class IBStore implements ApiController.IConnectionHandler {
         contract.currency("USD");
         contract.exchange("SMART");
         String tickType = "BidAsk";
-        int numberOfTicks = 2;
+        int numberOfTicks = 1;
         boolean ignoreSize = false;
-        DefaultTickByTickDataHandler defaultTickByTickDataHandler = new DefaultTickByTickDataHandler();
+        Properties props = KafkaProxy.getKafkaConfig();
+        props.put(CommonClientConfigs.CLIENT_ID_CONFIG, "ai01-"+symbol);
+        DefaultTickByTickDataHandler defaultTickByTickDataHandler = new DefaultTickByTickDataHandler(new KafkaProducer<>(props), symbol);
         m_controller.reqTickByTickData(contract, tickType, numberOfTicks, ignoreSize, defaultTickByTickDataHandler);
     }
     public void placeOrModifyOrder(){
