@@ -33,12 +33,17 @@ public class Decimal implements Comparable<Decimal> {
   // vars
   private final BigDecimal m_value;
 
-  private Decimal(double value) {
+  public Decimal(double value) {
     BigDecimal bd = new BigDecimal(value, MATH_CONTEXT);
     m_value = bd.setScale(16, MATH_CONTEXT.getRoundingMode());
   }
 
-  private Decimal(long value) {
+  public Decimal(long value) {
+    BigDecimal bd = new BigDecimal(value, MATH_CONTEXT);
+    m_value = bd.setScale(16, MATH_CONTEXT.getRoundingMode());
+  }
+
+  public Decimal(int value) {
     BigDecimal bd = new BigDecimal(value, MATH_CONTEXT);
     m_value = bd.setScale(16, MATH_CONTEXT.getRoundingMode());
   }

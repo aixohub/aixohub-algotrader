@@ -3,6 +3,7 @@
 
 package com.ib.controller;
 
+import com.aixohub.algotrader.broker.ib.IBStore;
 import com.aixohub.algotrader.broker.ib.config.IConnectionConfiguration;
 import com.ib.client.Bar;
 import com.ib.client.CommissionReport;
@@ -41,6 +42,7 @@ import com.ib.client.TickType;
 import com.ib.client.Types;
 import com.ib.client.WshEventData;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -54,6 +56,7 @@ import java.util.StringTokenizer;
 
 public class ApiController implements EWrapper {
 
+    private static final Logger logger = LoggerFactory.getLogger(IBStore.class);
     private static final int REPLACE_FA_GROUPS_REQ_ID = 0;
     private static final int REPLACE_FA_PROFILES_REQ_ID = 1;
     private final Logger m_outLogger;
@@ -110,14 +113,14 @@ public class ApiController implements EWrapper {
     private boolean m_connected = false;
 
     public ApiController(IConnectionHandler handler) {
-        this(handler, null, null);
+        this(handler, logger, logger);
     }
 
     public ApiController(IConnectionHandler handler, Logger inLogger, Logger outLogger) {
         m_connectionHandler = handler;
         m_client = new ApiConnection(this, inLogger, outLogger);
-        m_inLogger = inLogger;
-        m_outLogger = outLogger;
+        m_inLogger = logger;
+        m_outLogger = logger;
     }
 
     private static <K, V> K getAndRemoveKey(Map<K, V> map, V value) {
