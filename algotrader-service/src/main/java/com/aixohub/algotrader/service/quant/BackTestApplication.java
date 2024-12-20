@@ -8,13 +8,15 @@ import com.aixohub.algotrader.service.quant.strategy.criterion.NoOpenOrdersExist
 import com.aixohub.algotrader.service.quant.strategy.criterion.OpenOrdersExistForAllSymbolsExitCriterion;
 import com.aixohub.algotrader.service.quant.strategy.kalman.KalmanFilterStrategy;
 import com.aixohub.algotrader.service.quant.util.Helper;
-import com.google.common.collect.ImmutableList;
-import com.ib.controller.ApiController;
 import com.aixohub.algotrader.service.trading.lib.backtest.BackTest;
 import com.aixohub.algotrader.service.trading.lib.backtest.BackTestTradingContext;
 import com.aixohub.algotrader.service.trading.lib.model.ClosedOrder;
 import com.aixohub.algotrader.service.trading.lib.series.MultipleDoubleSeries;
 import com.aixohub.algotrader.service.trading.main.strategy.kalman.Cointegration;
+import com.google.common.collect.ImmutableList;
+import com.ib.controller.ApiController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -28,6 +30,8 @@ import static java.lang.String.format;
  * historical data
  */
 public class BackTestApplication {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BackTestApplication.class);
 
     public static final String DEFAULT_HOST = "127.0.0.1";
     public static final int DEFAULT_IB_PORT = 4001;
@@ -81,15 +85,14 @@ public class BackTestApplication {
                     order.getClosePrice(),
                     order.getPl()));
         }
-        System.out.print(orders);
+        LOGGER.info("orders: {}", orders.toString());
 
-        System.out.println();
-        System.out.println("Backtest result of " + strategy.getClass() + ": " + strategy);
-        System.out.println("Prices: " + priceSeries);
-        System.out.println(format(Locale.US, "Simulated %d days, Initial deposit %d, Leverage %f",
+        LOGGER.info("BackTest result of " + strategy.getClass() + ": " + strategy);
+        LOGGER.info("Prices: " + priceSeries);
+        LOGGER.info(format(Locale.US, "Simulated %d days, Initial deposit %d, Leverage %f",
                 DAYS_OF_HISTORY, deposit, backTest.getLeverage()));
-        System.out.println(format(Locale.US, "Commissions = %f", result.getCommissions()));
-        System.out.println(
+        LOGGER.info(format(Locale.US, "Commissions = %f", result.getCommissions()));
+        LOGGER.info(
                 format(Locale.US,
                         "P/L = %.2f, Final value = %.2f, Result = %.2f%%, Annualized = %.2f%%, Sharpe (rf=0%%) = %.2f",
                         result.getPl(),

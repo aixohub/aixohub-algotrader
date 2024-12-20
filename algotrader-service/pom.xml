@@ -23,6 +23,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.aixohub</groupId>
+            <artifactId>algotrader-dao</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
 

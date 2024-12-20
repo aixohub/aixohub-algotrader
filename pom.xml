@@ -17,12 +17,13 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>3.4.0</spring-boot.version>
+        <spring-boot.version>3.4.1</spring-boot.version>
         <spring-cloud.version>2024.0.0</spring-cloud.version>
     </properties>
 
     <modules>
         <module>algotrader-base</module>
+        <module>algotrader-dao</module>
         <module>algotrader-broker</module>
         <module>algotrader-service</module>
         <module>algotrader-web</module>
@@ -67,6 +68,11 @@
             <dependency>
                 <groupId>com.aixohub</groupId>
                 <artifactId>algotrader-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aixohub</groupId>
+                <artifactId>algotrader-dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

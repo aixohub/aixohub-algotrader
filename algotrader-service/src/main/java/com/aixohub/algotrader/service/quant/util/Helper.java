@@ -3,6 +3,8 @@ package com.aixohub.algotrader.service.quant.util;
 import com.aixohub.algotrader.service.quant.config.ContractBuilder;
 import com.aixohub.algotrader.service.quant.observers.HistoryObserver;
 import com.aixohub.algotrader.service.quant.observers.impl.IbHistoryObserver;
+import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
+import com.aixohub.algotrader.service.trading.lib.series.MultipleDoubleSeries;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -14,8 +16,6 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.DurationFieldType;
 import org.joda.time.LocalDate;
-import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
-import com.aixohub.algotrader.service.trading.lib.series.MultipleDoubleSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class Helper {
 
-    private static Logger logger = LoggerFactory.getLogger(Helper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Helper.class);
 
     public static void getFxQuotes(String baseSymbol, String symbol) throws IOException,
             NoSuchFieldException, IllegalAccessException {
@@ -77,10 +77,10 @@ public class Helper {
             Field field = Response.Rates.class.getField(symbol.toLowerCase());
             double resSymbol = (double) field.get(res.rates);
             lines.add(String.format("%s, %s", d, resSymbol));
-            logger.info("{} {}/{} -  {}", res.date, baseSymbol, symbol, resSymbol);
+            LOGGER.info("{} {}/{} -  {}", res.date, baseSymbol, symbol, resSymbol);
 
         }
-        Files.write(file, lines, Charset.forName("UTF-8"));
+        Files.write(file, lines, StandardCharsets.UTF_8);
 
     }
 

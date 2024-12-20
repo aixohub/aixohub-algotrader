@@ -6,11 +6,15 @@ import com.aixohub.algotrader.service.quant.exception.CriterionViolationExceptio
 import com.aixohub.algotrader.service.quant.exception.NoOrderAvailable;
 import com.aixohub.algotrader.service.quant.exception.PriceNotAvailableException;
 import com.aixohub.algotrader.service.quant.strategy.Criterion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class ZScoreExitCriterion implements Criterion {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZScoreExitCriterion.class);
 
     private final String firstSymbol;
     private final String secondSymbol;
@@ -42,10 +46,8 @@ public class ZScoreExitCriterion implements Criterion {
                     tradingContext.getLastOrderBySymbol(firstSymbol).isLong() && zs > exitZScore) {
                 return true;
             }
-        } catch (PriceNotAvailableException e) {
-            return false;
-        } catch (NoOrderAvailable noOrderAvailable) {
-            noOrderAvailable.printStackTrace();
+        } catch (PriceNotAvailableException | NoOrderAvailable e) {
+            LOGGER.warn("ZScoreExitCriterion-error ", e);
             return false;
         }
         return false;

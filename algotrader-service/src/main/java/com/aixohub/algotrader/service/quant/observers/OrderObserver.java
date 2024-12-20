@@ -1,9 +1,11 @@
 package com.aixohub.algotrader.service.quant.observers;
 
+import com.ib.client.OrderState;
 import com.ib.client.OrderStatus;
 import com.ib.controller.ApiController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import rx.Observable;
 
 /**
  *
@@ -24,4 +26,6 @@ public interface OrderObserver extends ApiController.IOrderHandler {
     default void handle(int errorCode, String errorMsg) {
         logger.error("errorCode = {}, errorMsg = {}", errorCode, errorMsg);
     }
+
+    Observable<OrderState> observableOrderState();
 }

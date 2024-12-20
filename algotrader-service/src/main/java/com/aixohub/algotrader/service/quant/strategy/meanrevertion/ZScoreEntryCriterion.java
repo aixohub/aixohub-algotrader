@@ -5,11 +5,15 @@ import com.aixohub.algotrader.service.quant.context.TradingContext;
 import com.aixohub.algotrader.service.quant.exception.CriterionViolationException;
 import com.aixohub.algotrader.service.quant.exception.PriceNotAvailableException;
 import com.aixohub.algotrader.service.quant.strategy.Criterion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
  */
 public class ZScoreEntryCriterion implements Criterion {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZScoreEntryCriterion.class);
 
     private final String firstSymbol;
     private final String secondSymbol;
@@ -36,6 +40,7 @@ public class ZScoreEntryCriterion implements Criterion {
                 return true;
             }
         } catch (PriceNotAvailableException e) {
+            LOGGER.warn("ZScoreEntryCriterion: ", e);
             return false;
         }
         return false;

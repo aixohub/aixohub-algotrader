@@ -270,7 +270,7 @@ public class IbTradingContext implements TradingContext {
         HistoryObserver historyObserver = new IbHistoryObserver(symbol);
         controller.reqHistoricalData(contract, date, daysOfHistory, Types.DurationUnit.DAY,
                 Types.BarSize._1_min, Types.WhatToShow.TRADES, false, true,  historyObserver);
-        return ((IbHistoryObserver) historyObserver).observableDoubleSeries()
+        return historyObserver.observableDoubleSeries()
                 .toBlocking()
                 .first();
 
@@ -283,19 +283,19 @@ public class IbTradingContext implements TradingContext {
         ContractBuilder contractBuilder = new ContractBuilder();
 
         Contract contract = contractBuilder.build(symbol);
-        HistoryObserver historyObserver = new IbHistoryObserver(symbol);
+        IbHistoryObserver historyObserver = new IbHistoryObserver(symbol);
         controller.reqHistoricalData(contract, date, numberOfMinutes * 60, Types.DurationUnit.SECOND,
                 Types.BarSize._1_min, Types.WhatToShow.TRADES, false, true, historyObserver);
 
-        DoubleSeries history = ((IbHistoryObserver) historyObserver).observableDoubleSeries()
+        DoubleSeries history = historyObserver.observableDoubleSeries()
                 .toBlocking()
                 .first();
         // We might need to pull history for last day if time of request is after market is closed
-        if (history.size() == 0 || history.size() < numberOfMinutes) {
+        if (history.isEmpty() || history.size() < numberOfMinutes) {
             controller.reqHistoricalData(contract, date, 1, Types.DurationUnit.DAY,
                     Types.BarSize._1_min, Types.WhatToShow.TRADES, false, true, historyObserver);
 
-            history = ((IbHistoryObserver) historyObserver).observableDoubleSeries()
+            history = historyObserver.observableDoubleSeries()
                     .toBlocking()
                     .first();
 
@@ -327,7 +327,7 @@ public class IbTradingContext implements TradingContext {
 
         controller.placeOrModifyOrder(ibContracts.get(contractSymbol), ibOrder, orderObserver);
 
-        return ((IbOrderObserver) orderObserver).observableOrderState();
+        return orderObserver.observableOrderState();
     }
 
     @Override

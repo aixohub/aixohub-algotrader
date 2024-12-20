@@ -5,11 +5,15 @@ import com.aixohub.algotrader.service.quant.context.TradingContext;
 import com.aixohub.algotrader.service.quant.exception.NoOrderAvailable;
 import com.aixohub.algotrader.service.quant.exception.PriceNotAvailableException;
 import com.aixohub.algotrader.service.quant.strategy.AbstractStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Bollinger bands strategy
  */
 public class BollingerBandsStrategy extends AbstractStrategy {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(BollingerBandsStrategy.class);
 
     private final String firstSymbol;
     private final String secondSymbol;
@@ -39,11 +43,11 @@ public class BollingerBandsStrategy extends AbstractStrategy {
                         (firstSymbol));
 
         tradingContext.order(firstSymbol, zScore.getLastCalculatedZScore() < 0,
-                (int) (baseAmount * hedgeRatio) > 1 ? (int) (baseAmount * hedgeRatio) : 1);
-        log.debug("Order of {} in amount {}", firstSymbol, (int) (baseAmount * hedgeRatio));
+                Math.max((int) (baseAmount * hedgeRatio), 1));
+        LOGGER.info("BollingerBandsStrategy-openPosition Order of {} in amount {}", firstSymbol, (int) (baseAmount * hedgeRatio));
 
         tradingContext.order(secondSymbol, zScore.getLastCalculatedZScore() > 0, (int) baseAmount);
-        log.debug("Order of {} in amount {}", secondSymbol, (int) baseAmount);
+        LOGGER.info("BollingerBandsStrategy-openPosition Order of {} in amount {}", secondSymbol, (int) baseAmount);
     }
 
     @Override
@@ -51,12 +55,12 @@ public class BollingerBandsStrategy extends AbstractStrategy {
         try {
             tradingContext.close(tradingContext.getLastOrderBySymbol(firstSymbol));
         } catch (NoOrderAvailable e) {
-            throw new RuntimeException(e);
+            LOGGER.warn("BollingerBandsStrategy-closePosition-error firstSymbol:{} ", firstSymbol, e);
         }
         try {
             tradingContext.close(tradingContext.getLastOrderBySymbol(secondSymbol));
         } catch (NoOrderAvailable e) {
-            throw new RuntimeException(e);
+            LOGGER.warn("BollingerBandsStrategy-closePosition-error secondSymbol:{} ", secondSymbol, e);
         }
     }
 }

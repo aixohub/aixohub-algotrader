@@ -9,11 +9,13 @@ import com.aixohub.algotrader.service.quant.exception.NoOrderAvailable;
 import com.aixohub.algotrader.service.quant.exception.PriceNotAvailableException;
 import com.aixohub.algotrader.service.quant.strategy.AbstractStrategy;
 import com.aixohub.algotrader.service.quant.strategy.Criterion;
-import org.apache.commons.math3.stat.StatUtils;
 import com.aixohub.algotrader.service.trading.lib.series.DoubleSeries;
 import com.aixohub.algotrader.service.trading.lib.series.MultipleDoubleSeries;
 import com.aixohub.algotrader.service.trading.lib.series.TimeSeries;
 import com.aixohub.algotrader.service.trading.main.strategy.kalman.Cointegration;
+import org.apache.commons.math3.stat.StatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Queue;
@@ -23,6 +25,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * Kalman filter strategy
  */
 public class KalmanFilterStrategy extends AbstractStrategy {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KalmanFilterStrategy.class);
 
     private final String firstSymbol;
     private final String secondSymbol;
@@ -60,10 +64,10 @@ public class KalmanFilterStrategy extends AbstractStrategy {
     public void openPosition() throws PriceNotAvailableException {
 
         tradingContext.order(secondSymbol, cointegration.getError() < 0, (int) baseAmount);
-        log.debug("Order of {} in amount {}", secondSymbol, (int) baseAmount);
+        LOGGER.info("Order of {} in amount {}", secondSymbol, (int) baseAmount);
 
         tradingContext.order(firstSymbol, cointegration.getError() > 0, (int) (baseAmount * beta));
-        log.debug("Order of {} in amount {}", firstSymbol, (int) (baseAmount * beta));
+        LOGGER.info("Order of {} in amount {}", firstSymbol, (int) (baseAmount * beta));
     }
 
     public void closePosition() throws PriceNotAvailableException {
@@ -139,22 +143,22 @@ public class KalmanFilterStrategy extends AbstractStrategy {
 
         @Override
         public boolean isMet() throws CriterionViolationException {
-            log.debug("Evaluating ErrorIsMoreThanStandardDeviationEntry criteria");
+            LOGGER.debug("Evaluating ErrorIsMoreThanStandardDeviationEntry criteria");
             double x;
             try {
                 x = tradingContext.getLastPrice(firstSymbol);
-                log.info("Current {} price {}", firstSymbol, x);
+                LOGGER.info("Current {} price {}", firstSymbol, x);
 
             } catch (PriceNotAvailableException e) {
-                log.error("Price for " + firstSymbol + " is not available.");
+                LOGGER.error("Price for " + firstSymbol + " is not available.");
                 return false;
             }
             double y;
             try {
                 y = tradingContext.getLastPrice(secondSymbol);
-                log.info("Current {} price {}", secondSymbol, y);
+                LOGGER.info("Current {} price {}", secondSymbol, y);
             } catch (PriceNotAvailableException e) {
-                log.error("Price for " + secondSymbol + " is not available.");
+                LOGGER.error("Price for " + secondSymbol + " is not available.");
                 return false;
             }
             beta = cointegration.getBeta();
@@ -167,13 +171,13 @@ public class KalmanFilterStrategy extends AbstractStrategy {
 
             double error = cointegration.getError();
             errorQueue.add(error);
-            log.debug("Error Queue size: {}", errorQueue.size());
+            LOGGER.debug("Error Queue size: {}", errorQueue.size());
             if (errorQueue.size() > errorQueueSize + 1) {
                 errorQueue.poll();
             }
 
             if (errorQueue.size() > errorQueueSize) {
-                log.debug("Kalman filter queue is > " + errorQueueSize);
+                LOGGER.debug("Kalman filter queue is > " + errorQueueSize);
                 Object[] errors = errorQueue.toArray();
                 double[] lastValues = new double[errorQueueSize / 2];
 
@@ -185,10 +189,10 @@ public class KalmanFilterStrategy extends AbstractStrategy {
 
                 sd = Math.sqrt(StatUtils.variance(lastValues));
                 double realSd = sdMultiplier * sd;
-                log.info("error={}, sd={}", error, realSd);
+                LOGGER.info("error={}, sd={}", error, realSd);
                 if (Math.abs(error) > realSd) {
-                    log.debug("error is bigger than square root of standard deviation");
-                    log.debug("Net value {}", tradingContext.getNetValue());
+                    LOGGER.debug("error is bigger than square root of standard deviation");
+                    LOGGER.debug("Net value {}", tradingContext.getNetValue());
                     if (secondSymbol.contains("=F")) {
                         //Exchange	Underlying	Product description	Trading Class	Intraday Initial 1	Intraday Maintenance 1	Overnight Initial	Overnight Maintenance	Currency	Has Options
                         //GLOBEX	ES	E-mini S&P 500	                          ES	3665	    2932	7330	5864	USD
@@ -201,12 +205,12 @@ public class KalmanFilterStrategy extends AbstractStrategy {
                         baseAmount =
                                 (tradingContext.getNetValue() * 0.5 * Math.min(4, tradingContext.getLeverage()))
                                         / (y + beta * x);
-                        log.debug("baseAmount={},  sd={}, beta={}", baseAmount, cointegration.getError(), beta);
+                        LOGGER.debug("baseAmount={},  sd={}, beta={}", baseAmount, cointegration.getError(), beta);
 
                     }
                     if (beta > 0 && baseAmount * beta >= 1) {
-                        log.info("error={}, sd={}", error, realSd);
-                        log.info("{} price {}; {} price {}", firstSymbol, x, secondSymbol, y);
+                        LOGGER.info("error={}, sd={}", error, realSd);
+                        LOGGER.info("{} price {}; {} price {}", firstSymbol, x, secondSymbol, y);
                         return true;
 
                     }
@@ -228,23 +232,23 @@ public class KalmanFilterStrategy extends AbstractStrategy {
         @Override
         public boolean isMet() throws CriterionViolationException {
 
-            log.debug("Evaluating KalmanFilterExitCriterion criteria");
+            LOGGER.debug("Evaluating KalmanFilterExitCriterion criteria");
             try {
                 if (tradingContext.getLastOrderBySymbol(secondSymbol).isLong() &&
                         cointegration.getError() > sdMultiplier * sd ||
                         tradingContext.getLastOrderBySymbol(secondSymbol).isShort() &&
                                 cointegration.getError() < -sdMultiplier * sd) {
-                    log.info("error={}, sd={}", cointegration.getError(), sd);
-                    log.info("{} price {}; {} price {}", firstSymbol, tradingContext.getLastPrice(firstSymbol),
+                    LOGGER.info("error={}, sd={}", cointegration.getError(), sd);
+                    LOGGER.info("{} price {}; {} price {}", firstSymbol, tradingContext.getLastPrice(firstSymbol),
                             secondSymbol, tradingContext.getLastPrice(secondSymbol));
                     return true;
                 }
 
             } catch (PriceNotAvailableException e) {
-                log.debug("No price available for some symbol");
+                LOGGER.warn("No price available for some symbol", e);
                 return false;
             } catch (NoOrderAvailable e) {
-                throw new RuntimeException(e);
+                LOGGER.warn("NoOrderAvailable for some symbol", e);
             }
             return false;
         }

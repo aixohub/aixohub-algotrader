@@ -25,19 +25,19 @@ public interface TradingStrategy {
                 try {
                     openPosition();
                 } catch (PriceNotAvailableException e) {
-                    log.error("Price for requested contract is not available");
+                    log.warn("Price for requested contract is not available");
                 }
             } else if (isStopLossCriteriaMet()) {
                 try {
                     closePosition();
                 } catch (PriceNotAvailableException e) {
-                    log.error("Price for requested contract is not available");
+                    log.warn("Price for requested contract is not available");
                 }
             } else if (isExitCriteriaMet()) {
                 try {
                     closePosition();
                 } catch (PriceNotAvailableException e) {
-                    log.error("Price for requested contract is not available");
+                    log.warn("Price for requested contract is not available");
                 }
             }
         }

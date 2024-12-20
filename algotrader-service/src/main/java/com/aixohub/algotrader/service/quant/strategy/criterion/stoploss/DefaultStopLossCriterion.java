@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class DefaultStopLossCriterion implements Criterion {
 
-    private static final Logger log = LoggerFactory.getLogger(DefaultStopLossCriterion.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultStopLossCriterion.class);
     private final double thresholdAmount;
     private final TradingContext tradingContext;
     private final List<String> symbols;
@@ -39,13 +39,13 @@ public class DefaultStopLossCriterion implements Criterion {
                 Order order = tradingContext.getLastOrderBySymbol(symbol);
                 double symbolPl = (tradingContext.getLastPrice(symbol) * order.getAmount())
                         + (order.getOpenPrice() * -order.getAmount());
-                log.debug("Symbol P/L: {}", symbolPl);
+                LOGGER.info("DefaultStopLossCriterion Symbol P/L: {}", symbolPl);
                 totalPl += symbolPl;
             } catch (NoOrderAvailable | PriceNotAvailableException noOrderAvailable) {
                 return false;
             }
         }
-        log.debug("Total PL: {}", totalPl);
+        LOGGER.info("DefaultStopLossCriterion Total PL: {}", totalPl);
         return totalPl <= thresholdAmount;
     }
 }

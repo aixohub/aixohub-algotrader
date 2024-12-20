@@ -102,7 +102,7 @@ public abstract class AbstractStrategy implements TradingStrategy {
     }
 
     private boolean testCriteria(List<Criterion> criteria) {
-        if (criteria.size() == 0) {
+        if (criteria.isEmpty()) {
             return true;
         }
 

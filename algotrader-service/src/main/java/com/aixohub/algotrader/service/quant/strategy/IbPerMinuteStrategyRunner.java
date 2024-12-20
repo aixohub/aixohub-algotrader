@@ -13,7 +13,7 @@ import java.util.TimerTask;
 public class IbPerMinuteStrategyRunner implements StrategyRunner {
 
     @Override
-    public void run(TradingStrategy strategy, List<String> symbols) {
+    public void runStrategy(TradingStrategy strategy, List<String> symbols) {
 
         for (String symbol : symbols) {
             strategy.addSymbol(symbol);
@@ -30,7 +30,7 @@ public class IbPerMinuteStrategyRunner implements StrategyRunner {
     }
 
     @Override
-    public void stop(TradingStrategy strategy, List<String> symbols) {
+    public void stopStrategy(TradingStrategy strategy, List<String> symbols) {
 
     }
 

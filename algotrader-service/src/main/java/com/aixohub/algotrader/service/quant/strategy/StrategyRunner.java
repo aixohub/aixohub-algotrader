@@ -13,7 +13,7 @@ public interface StrategyRunner {
      * @param strategy strategy to run
      * @param symbols  list
      */
-    void run(TradingStrategy strategy, List<String> symbols);
+    void runStrategy(TradingStrategy strategy, List<String> symbols);
 
     /**
      * Stop the specified strategy for specified symbols.
@@ -21,6 +21,6 @@ public interface StrategyRunner {
      * @param strategy strategy to stop
      * @param symbols  symbols list
      */
-    void stop(TradingStrategy strategy, List<String> symbols);
+    void stopStrategy(TradingStrategy strategy, List<String> symbols);
 
 }
