@@ -21,18 +21,18 @@ public interface AccountObserver extends IAccountHandler {
             setNetValue(Double.parseDouble(value));
         }
         if (key.equals("AvailableFunds") && currency.equals("USD")) {
-            logger.debug(String.format("account: %s, key: %s, value: %s, currency: %s",
-                    account, key, value, currency));
+            logger.info("account: {}, key: {}, value: {}, currency: {}",
+                    account, key, value, currency);
             setCashBalance(Double.parseDouble(value));
         }
     }
 
     default void accountTime(String timeStamp) {
-        logger.debug(String.format("account time: %s", timeStamp));
+        logger.info(String.format("account time: %s", timeStamp));
     }
 
     default void accountDownloadEnd(String account) {
-        logger.debug(String.format("account download end: %s", account));
+        logger.info("accountDownloadEnd account: {}", account);
     }
 
     @Override

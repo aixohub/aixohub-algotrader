@@ -1,0 +1,19 @@
+dialect "mvel"
+global com.aixohub.algotrader.service.rule.StrategyManager strategyManager;
+global com.aixohub.algotrader.service.rule.MarketCondition marketCondition;
+
+rule "Switch to Momentum Strategy"
+when
+    marketConditionInstance:MarketCondition(volatility < 1);
+then
+    strategyManager.switchTo("TrendFollowingStrategy");
+    System.out.println("Switched to Trend-Following-Strategy");
+end
+
+rule "Switch to Mean Reversion Strategy"
+when
+    marketConditionInstance:MarketCondition(volatility > 1);
+then
+    strategyManager.switchTo("MeanReversionStrategy");
+    System.out.println("Switched to Mean-Reversion-Strategy");
+end

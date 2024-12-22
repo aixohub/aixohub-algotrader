@@ -1,0 +1,12 @@
+global com.aixohub.algotrader.service.calc.Fare rideFare;
+global com.aixohub.algotrader.service.calc.TaxiRide taxiRide;
+
+dialect  "mvel"
+
+rule "Calculate Taxi Fare - Scenario 1"
+    when
+        taxiRideInstance:TaxiRide(nightSurchargeFlag == false && distanceInMile < 10);
+    then
+      	rideFare.setNightSurcharge(2L);
+       	rideFare.setRideFare(70L);
+end

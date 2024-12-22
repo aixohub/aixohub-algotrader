@@ -1,5 +1,7 @@
-package com.aixohub.algotrader.service.quant.strategy;
+package com.aixohub.algotrader.service.quant.strategy.runner;
 
+import com.aixohub.algotrader.service.quant.strategy.StrategyRunner;
+import com.aixohub.algotrader.service.quant.strategy.TradingStrategy;
 import org.joda.time.DateTime;
 
 import java.util.Date;

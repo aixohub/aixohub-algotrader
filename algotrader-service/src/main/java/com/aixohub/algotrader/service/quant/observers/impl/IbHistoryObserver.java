@@ -50,7 +50,7 @@ public class IbHistoryObserver implements HistoryObserver {
     @Override
     public void historicalDataEnd() {
         priceSubject.onNext(doubleSeries);
-        logger.debug("End of historic data for " + symbol);
+        logger.info("historicalDataEnd for symbol: {}" , symbol);
     }
 
     public Observable<DoubleSeries> observableDoubleSeries() {

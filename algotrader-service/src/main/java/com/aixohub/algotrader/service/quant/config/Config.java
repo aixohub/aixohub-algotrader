@@ -3,7 +3,7 @@ package com.aixohub.algotrader.service.quant.config;
 import com.aixohub.algotrader.service.quant.context.IbTradingContext;
 import com.aixohub.algotrader.service.quant.context.TradingContext;
 import com.aixohub.algotrader.service.quant.strategy.Criterion;
-import com.aixohub.algotrader.service.quant.strategy.IbPerMinuteStrategyRunner;
+import com.aixohub.algotrader.service.quant.strategy.runner.IbPerMinuteStrategyRunner;
 import com.aixohub.algotrader.service.quant.strategy.TradingStrategy;
 import com.aixohub.algotrader.service.quant.strategy.StrategyRunner;
 import com.aixohub.algotrader.service.quant.strategy.criterion.NoOpenOrdersExistEntryCriterion;
