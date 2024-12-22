@@ -1,4 +1,4 @@
-package com.aixohub.algotrader_base;
+package com.aixohub.algotrader.dao;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

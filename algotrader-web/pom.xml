@@ -21,7 +21,7 @@
 
         <dependency>
             <groupId>com.aixohub</groupId>
-            <artifactId>algotrader-base</artifactId>
+            <artifactId>algotrader-service</artifactId>
         </dependency>
 
     </dependencies>
